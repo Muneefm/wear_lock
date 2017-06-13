@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Wear Lock</string>
+    <string name="action_settings">Settings</string>
+    <string name="test_string">This is a test string</string>
+    <string name="title_activity_launch">LaunchActivity</string>
+
+</resources>
