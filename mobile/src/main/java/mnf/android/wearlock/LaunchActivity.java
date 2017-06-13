@@ -4,18 +4,23 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.FloatRange;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import agency.tango.materialintroscreen.MaterialIntroActivity;
 import agency.tango.materialintroscreen.MessageButtonBehaviour;
 import agency.tango.materialintroscreen.SlideFragmentBuilder;
+import agency.tango.materialintroscreen.animations.IViewTranslation;
+import agency.tango.materialintroscreen.animations.ViewTranslationWrapper;
 import mnf.android.wearlock.Interfaces.DeviceAdminCallback;
 import mnf.android.wearlock.Tools.DeviceAdmin;
+import mnf.android.wearlock.misc.LastSlide;
 
 public class LaunchActivity extends MaterialIntroActivity {
 
@@ -33,6 +38,15 @@ public class LaunchActivity extends MaterialIntroActivity {
             }
         });
 
+        enableLastSlideAlphaExitTransition(true);
+
+        getBackButtonTranslationWrapper()
+                .setEnterTranslation(new IViewTranslation() {
+                    @Override
+                    public void translate(View view, @FloatRange(from = 0, to = 1.0) float percentage) {
+                        view.setAlpha(percentage);
+                    }
+                });
 
         addSlide(new SlideFragmentBuilder()
                         .backgroundColor(R.color.first_slide_background)
@@ -57,6 +71,7 @@ public class LaunchActivity extends MaterialIntroActivity {
                         .buttonsColor(R.color.purple800)
 
                         .image(R.mipmap.main_icon)
+
                         .title("We provide best solution ")
                         .description("\nBut according to android policy \nThe app need Admin privilege to lock the device. ")
                         .build(),
@@ -80,6 +95,26 @@ public class LaunchActivity extends MaterialIntroActivity {
                 .build());
 */
 
+
+        //addSlide(new LastSlide());
+
+
+    }
+
+    @Override
+    public ViewTranslationWrapper getNextButtonTranslationWrapper() {
+        return super.getNextButtonTranslationWrapper();
+    }
+    @Override
+    public void onFinish() {
+        if(new ApplicationController().isAdminActive()) {
+            Intent intent = new Intent(LaunchActivity.this,MainActivity.class);
+            startActivity(intent);
+        }else{
+           // showMessage("Please provide admin privilege ");
+            new ApplicationController().enableDeviceAdmin(c);
+
+        }
     }
 
 }

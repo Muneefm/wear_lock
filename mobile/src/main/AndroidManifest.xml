@@ -21,7 +21,7 @@
         <receiver
             android:name=".Tools.DeviceAdmin"
             android:description="@string/app_name"
-            android:label="Device admin reciever"
+            android:label="Device admin Receiver"
             android:permission="android.permission.BIND_DEVICE_ADMIN">
             <meta-data
                 android:name="android.app.device_admin"
