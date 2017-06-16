@@ -1,5 +1,4 @@
 package mnf.android.wearlock;
-
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
@@ -18,6 +17,7 @@ import agency.tango.materialintroscreen.MessageButtonBehaviour;
 import agency.tango.materialintroscreen.SlideFragmentBuilder;
 import agency.tango.materialintroscreen.animations.IViewTranslation;
 import agency.tango.materialintroscreen.animations.ViewTranslationWrapper;
+import mnf.android.wearlock.Activity.PreferanceActivity;
 import mnf.android.wearlock.Interfaces.DeviceAdminCallback;
 import mnf.android.wearlock.Tools.DeviceAdmin;
 import mnf.android.wearlock.misc.LastSlide;
@@ -81,7 +81,7 @@ public class LaunchActivity extends MaterialIntroActivity {
                         if(!new ApplicationController().isAdminActive()) {
                             new ApplicationController().enableDeviceAdmin(c);
                         }else{
-                            Intent mainAct = new Intent(LaunchActivity.this,MainActivity.class);
+                            Intent mainAct = new Intent(LaunchActivity.this,PreferanceActivity.class);
                             startActivity(mainAct);
                         }
                     }
@@ -108,7 +108,7 @@ public class LaunchActivity extends MaterialIntroActivity {
     @Override
     public void onFinish() {
         if(new ApplicationController().isAdminActive()) {
-            Intent intent = new Intent(LaunchActivity.this,MainActivity.class);
+            Intent intent = new Intent(LaunchActivity.this,PreferanceActivity.class);
             startActivity(intent);
         }else{
            // showMessage("Please provide admin privilege ");

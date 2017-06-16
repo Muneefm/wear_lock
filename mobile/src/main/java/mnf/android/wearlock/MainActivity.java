@@ -14,6 +14,14 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.wearable.Node;
+import com.google.android.gms.wearable.NodeApi;
+import com.google.android.gms.wearable.Wearable;
+
+import java.util.List;
+
+import mnf.android.wearlock.Interfaces.WearNodeApiListener;
 import mnf.android.wearlock.Tools.DeviceAdmin;
 
 public class MainActivity extends AppCompatActivity {
@@ -21,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_CODE_ENABLE_ADMIN = 1;
     ComponentName deviceAdminComponent;
     Context c;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,9 +37,14 @@ public class MainActivity extends AppCompatActivity {
         c = this;
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        deviceAdminComponent = new ComponentName(c, DeviceAdmin.class);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+
+       // Log.e("MainActivity","getWear devices "+new ApplicationController().getWearDeviceConected().size());
+
+
+
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

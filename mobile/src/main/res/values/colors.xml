@@ -7,6 +7,13 @@
     <color name="black_overlay">#66000000</color>
 
 
+    <color name="indigo500">#3F51B5</color>
+    <color name="deep_purple500">#673AB7</color>
+    <color name="cyan500">#00BCD4</color>
+
+    <color name="curious_blue">#3E93D3</color>
+    <color name="raven">#75777A</color>
+    <color name="iron">#CECFCF</color>
 
     <color name="first_slide_background">#E91E63</color>
     <color name="first_slide_buttons">#880E4F</color>

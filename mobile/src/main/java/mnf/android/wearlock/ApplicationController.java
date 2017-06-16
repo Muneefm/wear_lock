@@ -17,10 +17,16 @@ import android.view.MenuItem;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.wearable.DataApi;
 import com.google.android.gms.wearable.DataEventBuffer;
+import com.google.android.gms.wearable.Node;
+import com.google.android.gms.wearable.NodeApi;
 import com.google.android.gms.wearable.Wearable;
 
+import java.util.List;
+
+import mnf.android.wearlock.Interfaces.WearNodeApiListener;
 import mnf.android.wearlock.Tools.DeviceAdmin;
 import mnf.android.wearlock.Tools.WearListener;
 import mnf.android.wearlock.misc.BroadCast;
@@ -35,8 +41,9 @@ public class ApplicationController extends Application implements NavigationView
 
    static Context c ;
     DevicePolicyManager mDevicePolicyManager;
-    private GoogleApiClient mGoogleApiClient;
+    private static GoogleApiClient mGoogleApiClient;
     private int count = 0;
+    static WearNodeApiListener mNodeListener;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -52,6 +59,28 @@ public class ApplicationController extends Application implements NavigationView
         Log.e("ApplicationController","Application controller last ");
     }
 
+    public void getWearDeviceConected(){
+
+        Wearable.NodeApi.getConnectedNodes(mGoogleApiClient).setResultCallback(new ResultCallback<NodeApi.GetConnectedNodesResult>() {
+            @Override
+            public void onResult(NodeApi.GetConnectedNodesResult getConnectedNodesResult) {
+                List<Node> nodes = getConnectedNodesResult.getNodes();
+                Log.e("TAG","getWearDeviceConected Result "+nodes.size());
+
+                if(mNodeListener!=null) {
+                    Log.e("TAG","mNodeListener is not null");
+                    mNodeListener.onNodeConnected(nodes);
+                }else{
+                    Log.e("TAG","mNodeListener is null");
+                }
+            }
+        });
+    }
+
+    public void setWearNodeListener(WearNodeApiListener mNodeListener){
+        this.mNodeListener = mNodeListener;
+        getWearDeviceConected();
+    }
 
     public void lockDevice(){
     if(isAdminActive()){
@@ -63,7 +92,6 @@ public class ApplicationController extends Application implements NavigationView
     public boolean isAdminActive(){
         if(c==null) {
             Log.e("lock","is admin active  context null");
-
         }
         mDevicePolicyManager  = (DevicePolicyManager)c.getSystemService(Context.DEVICE_POLICY_SERVICE);
             return mDevicePolicyManager.isAdminActive(new ComponentName(c, DeviceAdmin.class));

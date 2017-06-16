@@ -25,10 +25,13 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     wearApp project(':wear')
+    compile 'com.jakewharton:butterknife:8.4.0'
     compile 'agency.tango.android:material-intro-screen:0.0.5'
     compile 'com.google.android.gms:play-services-wearable:10.2.6'
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.android.support:design:25.3.1'
     testCompile 'junit:junit:4.12'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
+
 }
