@@ -30,6 +30,7 @@ import mnf.android.wearlock.Interfaces.WearNodeApiListener;
 import mnf.android.wearlock.Tools.DeviceAdmin;
 import mnf.android.wearlock.Tools.WearListener;
 import mnf.android.wearlock.misc.BroadCast;
+import mnf.android.wearlock.misc.PreferensHandler;
 
 /**
  * Created by muneef on 10/06/17.
@@ -44,10 +45,12 @@ public class ApplicationController extends Application implements NavigationView
     private static GoogleApiClient mGoogleApiClient;
     private int count = 0;
     static WearNodeApiListener mNodeListener;
+    static PreferensHandler pref;
     @Override
     public void onCreate() {
         super.onCreate();
         c = this;
+        pref = new PreferensHandler(c);
         mDevicePolicyManager  = (DevicePolicyManager)getSystemService(Context.DEVICE_POLICY_SERVICE);
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addApi(Wearable.API)
@@ -58,6 +61,7 @@ public class ApplicationController extends Application implements NavigationView
         registerReceiver(new BroadCast(), new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED));
         Log.e("ApplicationController","Application controller last ");
     }
+
 
     public void getWearDeviceConected(){
 
@@ -83,10 +87,10 @@ public class ApplicationController extends Application implements NavigationView
     }
 
     public void lockDevice(){
-    if(isAdminActive()){
+    if(isAdminActive()&&pref.getWearLockEnable()){
         mDevicePolicyManager.lockNow();
     }else{
-        Log.e("lock","device does not have admin access");
+        Log.e("lock","device does not have admin access or preference is false = "+pref.getWearLockEnable());
     }
     }
     public boolean isAdminActive(){

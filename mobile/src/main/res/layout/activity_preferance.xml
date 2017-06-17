@@ -32,11 +32,15 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+
                 android:layout_marginTop="?attr/actionBarSize"
                 android:layout_height="match_parent">
                 <TextView
                     android:id="@+id/tag_conected"
+                    android:layout_marginTop="15dp"
                     android:layout_width="wrap_content"
+                    android:layout_centerHorizontal="true"
                     android:layout_height="wrap_content"
                     android:text="Connected Device"
                     android:textSize="13dp"
@@ -48,8 +52,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:textColor="@color/white"
-                    android:layout_marginLeft="10dp"
-                    android:textSize="18dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="0dp"
+                    android:textSize="22dp"
                     android:text="Connected Device"
                     />
 
@@ -76,6 +81,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/fab_margin"
         app:layout_anchor="@id/app_bar"
+        android:backgroundTint="@color/red"
         app:layout_anchorGravity="bottom|end"
         app:srcCompat="@android:drawable/ic_dialog_email" />
 
