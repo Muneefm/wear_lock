@@ -88,10 +88,10 @@ public class PreferanceActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked && !new ApplicationController().isAdminActive()){
                     // call dialogue
+                    new ApplicationController().showDialogue(c,getString(R.string.admin_warning),getString(R.string.admin_warning_content),"Enable admin",false);
                 }else{
                     pref.setWearLockEnable(isChecked);
                 }
-
             }
         });
 
@@ -114,7 +114,13 @@ public class PreferanceActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        new ApplicationController().setWearNodeListener(new WearNodeApiListener() {
+        ApplicationController appInstance = new ApplicationController();
+        if(c==null)
+        c = getApplicationContext();
+        if(!appInstance.isAdminActive()) {
+            appInstance.showDialogue(c, getString(R.string.admin_warning), getString(R.string.admin_warning_content), "Enable admin", false);
+        }
+        appInstance.setWearNodeListener(new WearNodeApiListener() {
             @Override
             public void onNodeConnected(List<Node> nodeList) {
                 Log.e("TAG","onNodeConnected node size = "+nodeList);

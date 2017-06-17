@@ -94,5 +94,7 @@
         "when a user tries to pick up one of cards.\n\n"
     </string>
     <string name="no_device_connected">Wear not Connected</string>
+    <string name="admin_warning">Please provide admin privilage</string>
+    <string name="admin_warning_content">This app needs admin privilage to work properly, please enable admin privilage</string>
 
 </resources>

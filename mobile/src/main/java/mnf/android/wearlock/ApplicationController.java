@@ -15,6 +15,8 @@ import android.support.design.widget.NavigationView;
 import android.util.Log;
 import android.view.MenuItem;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
@@ -86,11 +88,13 @@ public class ApplicationController extends Application implements NavigationView
         getWearDeviceConected();
     }
 
-    public void lockDevice(){
-    if(isAdminActive()&&pref.getWearLockEnable()){
+    public boolean lockDevice(){
+    if(isAdminActive()){
         mDevicePolicyManager.lockNow();
+        return true;
     }else{
         Log.e("lock","device does not have admin access or preference is false = "+pref.getWearLockEnable());
+        return false;
     }
     }
     public boolean isAdminActive(){
@@ -119,6 +123,26 @@ public class ApplicationController extends Application implements NavigationView
     }*/
     }
 
+    public void showDialogue(final Context c,String title,String content,String buttonText,boolean isCancallable ){
+        new MaterialDialog.Builder(c)
+                .title( title)
+                .content(content)
+                .positiveText(buttonText).onPositive(new MaterialDialog.SingleButtonCallback() {
+            @Override
+            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+               // startBrowser("https://play.google.com/store/apps/details?id=com.utorrent.client",c);
+                enableDeviceAdmin(c);
+            }
+        }).iconRes(R.mipmap.ic_launcher)
+                .positiveColor(c.getResources().getColor(R.color.white))
+                .contentColor(c.getResources().getColor(R.color.blue_grey800))
+                .backgroundColor(c.getResources().getColor(R.color.white))
+                .titleColorRes(R.color.black)
+                .cancelable(isCancallable)
+                .btnSelector(R.drawable.md_btn_selector_custom, DialogAction.POSITIVE)
+                .show();
+    }
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         return false;
@@ -145,6 +169,8 @@ public class ApplicationController extends Application implements NavigationView
     @Override
     public void onDataChanged(DataEventBuffer dataEventBuffer) {
         Log.e("lock","onDataChanged appcontroller 1 google client");
-        lockDevice();
+        if(pref.getWearLockEnable()) {
+            lockDevice();
+        }
     }
 }

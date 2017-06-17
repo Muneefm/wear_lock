@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import mnf.android.wearlock.Activity.PreferanceActivity;
 import mnf.android.wearlock.ApplicationController;
 
 /**
@@ -16,6 +17,7 @@ public class BroadCast extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.e("TAG","onReceive BroadCast");
+        PreferensHandler pref = new PreferensHandler(context);
 
 
         String action = intent.getAction();
@@ -27,7 +29,11 @@ public class BroadCast extends BroadcastReceiver {
             switch(state) {
                 case BluetoothAdapter.STATE_OFF:
                     Log.e("TAG","onReceive blue off");
-                    new ApplicationController().lockDevice();
+                    if(pref.getBluetoothLock()) {
+                        new ApplicationController().lockDevice();
+                    }else{
+                        Log.e("TAG","pref bluetooth false");
+                    }
                     break;
             }
 
