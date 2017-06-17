@@ -1,6 +1,7 @@
 package mnf.android.wearlock.Activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -10,6 +11,7 @@ import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -21,8 +23,12 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import mnf.android.wearlock.ApplicationController;
+import mnf.android.wearlock.Interfaces.DeviceAdminCallback;
 import mnf.android.wearlock.Interfaces.WearNodeApiListener;
+import mnf.android.wearlock.LaunchActivity;
+import mnf.android.wearlock.MainActivity;
 import mnf.android.wearlock.R;
+import mnf.android.wearlock.Tools.DeviceAdmin;
 import mnf.android.wearlock.misc.PreferensHandler;
 
 public class PreferanceActivity extends AppCompatActivity {
@@ -48,18 +54,25 @@ public class PreferanceActivity extends AppCompatActivity {
     SwitchCompat switchBluetoothLock;
     @BindView(R.id.switch_ring_phone)
     SwitchCompat switchRingPhone;
+
+    @BindView(R.id.admin_enable_button)
+    Button adminEnableBtn;
+    @BindView(R.id.admin_disable_button)
+    Button adminDisableBtn;
    /* @SwitchCompat(R.id.demo_text)
     TextView demoTv;*/
 
     PreferensHandler pref;
     Context c;
 
+    ApplicationController mAppController;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preferance);
         ButterKnife.bind(this);
         c = this;
+        mAppController = new ApplicationController();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         pref  = new PreferensHandler(c);
@@ -86,8 +99,11 @@ public class PreferanceActivity extends AppCompatActivity {
         switchLockWear.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                Log.e("TAG","lock wear switch callback");
+
                 if(isChecked && !new ApplicationController().isAdminActive()){
                     // call dialogue
+                    switchLockWear.setChecked(false);
                     new ApplicationController().showDialogue(c,getString(R.string.admin_warning),getString(R.string.admin_warning_content),"Enable admin",false);
                 }else{
                     pref.setWearLockEnable(isChecked);
@@ -98,7 +114,15 @@ public class PreferanceActivity extends AppCompatActivity {
         switchBluetoothLock.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                pref.setBluetoothLock(isChecked);
+                Log.e("TAG","lock wear switch callback");
+
+                if(isChecked && !new ApplicationController().isAdminActive()){
+                    // call dialogue
+                    switchBluetoothLock.setChecked(false);
+                    new ApplicationController().showDialogue(c,getString(R.string.admin_warning),getString(R.string.admin_warning_content),"Enable admin",false);
+                }else{
+                    pref.setBluetoothLock(isChecked);
+                }
             }
         });
 
@@ -109,6 +133,55 @@ public class PreferanceActivity extends AppCompatActivity {
             }
         });
 
+        if(mAppController.isAdminActive()){
+            adminState(true);
+        }else{
+           adminState(false);
+        }
+
+        new DeviceAdmin().setDeviceAdminCallback(new DeviceAdminCallback() {
+            @Override
+            public void onAdminEnabled() {
+                adminState(true);
+                switchLockWear.setChecked(true);
+
+            }
+
+            @Override
+            public void onAdminDisabled() {
+                adminState(false);
+                switchBluetoothLock.setChecked(false);
+                switchLockWear.setChecked(false);
+
+
+            }
+        });
+    }
+
+    private void adminState(boolean isOn){
+        if (isOn) {
+            adminEnableBtn.setVisibility(View.GONE);
+            adminDisableBtn.setVisibility(View.VISIBLE);
+        }
+        else{
+            adminEnableBtn.setVisibility(View.VISIBLE);
+            adminDisableBtn.setVisibility(View.GONE);
+        }
+        adminDisableBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mAppController!=null){
+                        mAppController.disableDeviceAdmin(c);
+                }
+            }
+        });
+        adminEnableBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAppController.enableDeviceAdmin(c);
+
+            }
+        });
     }
 
     @Override

@@ -36,6 +36,9 @@ public class DeviceAdmin extends DeviceAdminReceiver {
     public void onDisabled(Context context, Intent intent) {
         super.onDisabled(context, intent);
         Log.e("DeviceAdmin","AdminReciever enabled");
+        if(mCallback!=null) {
+            mCallback.onAdminDisabled();
+        }
     }
 
 }

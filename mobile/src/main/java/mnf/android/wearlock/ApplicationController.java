@@ -123,6 +123,13 @@ public class ApplicationController extends Application implements NavigationView
     }*/
     }
 
+    public void disableDeviceAdmin(Context c){
+        if(isAdminActive()){
+            mDevicePolicyManager.removeActiveAdmin(new ComponentName(c, DeviceAdmin.class));
+        }
+
+    }
+
     public void showDialogue(final Context c,String title,String content,String buttonText,boolean isCancallable ){
         new MaterialDialog.Builder(c)
                 .title( title)

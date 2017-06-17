@@ -6,5 +6,6 @@ package mnf.android.wearlock.Interfaces;
 
 public interface DeviceAdminCallback {
     void onAdminEnabled ();
+    void onAdminDisabled ();
 }
 

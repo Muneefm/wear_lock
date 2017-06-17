@@ -33,8 +33,13 @@ public class LaunchActivity extends MaterialIntroActivity {
             @Override
             public void onAdminEnabled() {
 
-                Intent mainAct = new Intent(LaunchActivity.this,MainActivity.class);
+                Intent mainAct = new Intent(LaunchActivity.this,PreferanceActivity.class);
                 startActivity(mainAct);
+            }
+
+            @Override
+            public void onAdminDisabled() {
+
             }
         });
 
