@@ -53,7 +53,7 @@ public class AppController extends Application implements GoogleApiClient.Connec
 
 if(mApiClient.isConnected()) {
 Log.e("lock","google client connected");
-    PutDataMapRequest putDataMapReq = PutDataMapRequest.create("/lock");
+    PutDataMapRequest putDataMapReq = PutDataMapRequest.create("/wear_lock_mnf");
     putDataMapReq.getDataMap().putString("action", "device_lock-"+ UUID.randomUUID().toString());
     PutDataRequest putDataReq = putDataMapReq.asPutDataRequest().setUrgent();
     PendingResult<DataApi.DataItemResult> pendingResult =

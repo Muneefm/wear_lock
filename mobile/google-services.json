@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "819267383957",
+    "firebase_url": "https://wear-lock.firebaseio.com",
+    "project_id": "wear-lock",
+    "storage_bucket": "wear-lock.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:819267383957:android:79deb8c9ee97ee1f",
+        "android_client_info": {
+          "package_name": "mnf.android.wearlock"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "819267383957-p0or74ei9p6if4c2c9qcee9ir61o9kbu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDMdszV7R8vC0iSIE7rjRPS0sGuQiBpG0c"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

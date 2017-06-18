@@ -112,7 +112,7 @@ public class ApplicationController extends Application implements NavigationView
         Intent intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
         intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, new ComponentName(c, DeviceAdmin.class));
         intent.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION,
-                c.getString(R.string.test_string));
+                c.getString(R.string.admin_warning_content));
         c.startActivity(intent);
         // return false - don't update checkbox until we're really active
         return false;
