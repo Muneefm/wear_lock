@@ -1,6 +1,9 @@
 package mnf.android.wearlock;
 
 import android.app.Application;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.admin.DeviceAdminReceiver;
 import android.app.admin.DevicePolicyManager;
 import android.bluetooth.BluetoothAdapter;
@@ -8,6 +11,9 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -20,14 +26,20 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.data.FreezableUtils;
 import com.google.android.gms.wearable.DataApi;
+import com.google.android.gms.wearable.DataEvent;
 import com.google.android.gms.wearable.DataEventBuffer;
+import com.google.android.gms.wearable.DataMap;
+import com.google.android.gms.wearable.DataMapItem;
 import com.google.android.gms.wearable.Node;
 import com.google.android.gms.wearable.NodeApi;
 import com.google.android.gms.wearable.Wearable;
 
+import java.lang.reflect.Modifier;
 import java.util.List;
 
+import mnf.android.wearlock.Activity.PreferanceActivity;
 import mnf.android.wearlock.Interfaces.WearNodeApiListener;
 import mnf.android.wearlock.Tools.DeviceAdmin;
 import mnf.android.wearlock.Tools.WearListener;
@@ -48,6 +60,8 @@ public class ApplicationController extends Application implements NavigationView
     private int count = 0;
     static WearNodeApiListener mNodeListener;
     static PreferensHandler pref;
+   static Ringtone defaultRingtone;
+   static Uri defaultRintoneUri;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -62,6 +76,9 @@ public class ApplicationController extends Application implements NavigationView
         mGoogleApiClient.connect();
         registerReceiver(new BroadCast(), new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED));
         Log.e("ApplicationController","Application controller last ");
+        Uri defaultRintoneUri = RingtoneManager.getActualDefaultRingtoneUri(c.getApplicationContext(), RingtoneManager.TYPE_RINGTONE);
+        defaultRingtone = RingtoneManager.getRingtone(c, defaultRintoneUri);
+
     }
 
 
@@ -150,6 +167,40 @@ public class ApplicationController extends Application implements NavigationView
                 .show();
     }
 
+    public  void startRingPhone(boolean isRing){
+        Log.e("lock","startRingPhone "+isRing);
+
+        try {
+        /*    Log.e("lock","startRingPhone "+isRing);
+
+            Uri path = Uri.parse("android.resource://"+getPackageName()+"/raw/sound.mp3");
+            // The line below will set it as a default ring tone replace
+            // RingtoneManager.TYPE_RINGTONE with RingtoneManager.TYPE_NOTIFICATION
+            // to set it as a notification tone
+            RingtoneManager.setActualDefaultRingtoneUri(
+                    getApplicationContext(), RingtoneManager.TYPE_RINGTONE,
+                    path);
+            Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), path);
+            r.play();*/
+           if(defaultRingtone!=null){
+               if(!defaultRingtone.isPlaying()) {
+                   defaultRintoneUri = RingtoneManager.getActualDefaultRingtoneUri(c.getApplicationContext(), RingtoneManager.TYPE_RINGTONE);
+                   defaultRingtone = RingtoneManager.getRingtone(c, defaultRintoneUri);
+                   defaultRingtone.play();
+                   notificationPref(true);
+               }
+               else{
+                   defaultRingtone.stop();
+                   notificationPref(false);
+
+               }
+           }
+
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         return false;
@@ -176,8 +227,63 @@ public class ApplicationController extends Application implements NavigationView
     @Override
     public void onDataChanged(DataEventBuffer dataEventBuffer) {
         Log.e("lock","onDataChanged appcontroller 1 google client");
-        if(pref.getWearLockEnable()) {
+     /*   if(pref.getWearLockEnable()) {
             lockDevice();
+        }else{
+            startRingPhone(true);
+        }
+*/
+
+
+        final List<DataEvent> events = FreezableUtils.freezeIterable(dataEventBuffer);
+        for (DataEvent event : events) {
+            final Uri uri = event.getDataItem().getUri();
+            final String path = uri != null ? uri.getPath() : null;
+            final DataMap map = DataMapItem.fromDataItem(event.getDataItem()).getDataMap();
+
+            if ("/wear_lock_mnf".equals(path)) {
+                if(pref.getWearLockEnable()) {
+                    lockDevice();
+                }
+            }
+            else if("/ring_phone_mnf".equals(path)){
+                if(pref.getPhoneRignEnable()) {
+                    startRingPhone(true);
+                }
+            }
+
+        }
+    }
+
+    public void notificationPref(boolean show){
+        if(show) {
+            Intent intent = new Intent(this, PreferanceActivity.class);
+            intent.putExtra("notification","1");
+// use System.currentTimeMillis() to have a unique ID for the pending intent
+            PendingIntent pIntent = PendingIntent.getActivity(this, (int) System.currentTimeMillis(), intent, 0);
+
+// build notification
+// the addAction re-use the same intent to keep the example short
+            Notification n = new Notification.Builder(this)
+                    .setContentTitle("Ring !!")
+                    .setContentText("Ring ring from wear")
+                    .setSmallIcon(R.drawable.ic_notification)
+                    .setContentIntent(pIntent)
+                    .setAutoCancel(true)
+                    .addAction(R.drawable.ic_notification, "Stop", pIntent)
+                    .setPriority(Notification.PRIORITY_HIGH)
+                    .build();
+
+
+            NotificationManager notificationManager =
+                    (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
+            notificationManager.notify(0, n);
+        }else{
+            NotificationManager notificationManager =
+                    (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
+            notificationManager.cancel(0);
         }
     }
 }

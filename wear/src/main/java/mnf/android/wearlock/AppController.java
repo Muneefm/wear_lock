@@ -51,18 +51,35 @@ public class AppController extends Application implements GoogleApiClient.Connec
     public void sendLockToDevice(){
         Log.e("lock","sendLockToDevice");
 
-if(mApiClient.isConnected()) {
-Log.e("lock","google client connected");
-    PutDataMapRequest putDataMapReq = PutDataMapRequest.create("/wear_lock_mnf");
-    putDataMapReq.getDataMap().putString("action", "device_lock-"+ UUID.randomUUID().toString());
-    PutDataRequest putDataReq = putDataMapReq.asPutDataRequest().setUrgent();
-    PendingResult<DataApi.DataItemResult> pendingResult =
-            Wearable.DataApi.putDataItem(mApiClient, putDataReq);
-    Log.e("lock","send data from wear");
-}else{
-    Log.e("lock","google client not connected");
+            if(mApiClient.isConnected()) {
+            Log.e("lock","google client connected");
+                PutDataMapRequest putDataMapReq = PutDataMapRequest.create("/wear_lock_mnf");
+                putDataMapReq.getDataMap().putString("action", "device_lock-"+ UUID.randomUUID().toString());
+                PutDataRequest putDataReq = putDataMapReq.asPutDataRequest().setUrgent();
+                PendingResult<DataApi.DataItemResult> pendingResult =
+                        Wearable.DataApi.putDataItem(mApiClient, putDataReq);
+                Log.e("lock","send data from wear");
+            }else{
+                Log.e("lock","google client not connected");
 
-}
+            }
+    }
+
+    public void sendRingToDevice(){
+        Log.e("lock","sendLockToDevice");
+
+        if(mApiClient.isConnected()) {
+            Log.e("ring","google client connected");
+            PutDataMapRequest putDataMapReq = PutDataMapRequest.create("/ring_phone_mnf");
+            putDataMapReq.getDataMap().putString("action", "device_ring-"+ UUID.randomUUID().toString());
+            PutDataRequest putDataReq = putDataMapReq.asPutDataRequest().setUrgent();
+            PendingResult<DataApi.DataItemResult> pendingResult =
+                    Wearable.DataApi.putDataItem(mApiClient, putDataReq);
+            Log.e("lock","send data from wear");
+        }else{
+            Log.e("lock","google client not connected");
+
+        }
     }
 
     @Override

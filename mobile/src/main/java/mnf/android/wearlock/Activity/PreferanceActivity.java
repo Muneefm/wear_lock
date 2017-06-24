@@ -88,6 +88,12 @@ public class PreferanceActivity extends AppCompatActivity {
         switchBluetoothLock.setChecked(pref.getBluetoothLock());
         switchRingPhone.setChecked(pref.getPhoneRignEnable());
 
+        Intent intent = getIntent();
+        if(intent.hasExtra("notification")){
+         String value = intent.getStringExtra("notification");
+            new ApplicationController().startRingPhone(false);
+            Log.e("TAG","inside android getExtra");
+        }
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override

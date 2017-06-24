@@ -75,7 +75,7 @@ public class RingFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.e("MainActivity","lock button clicked");
-                new AppController().sendLockToDevice();
+                new AppController().sendRingToDevice();
             }
         });
         return v;
