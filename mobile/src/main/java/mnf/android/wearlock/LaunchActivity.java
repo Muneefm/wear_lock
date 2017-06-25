@@ -21,20 +21,32 @@ import mnf.android.wearlock.Activity.PreferanceActivity;
 import mnf.android.wearlock.Interfaces.DeviceAdminCallback;
 import mnf.android.wearlock.Tools.DeviceAdmin;
 import mnf.android.wearlock.misc.LastSlide;
+import mnf.android.wearlock.misc.PreferensHandler;
 
 public class LaunchActivity extends MaterialIntroActivity {
 
     Context c;
+    PreferensHandler pref;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         c = this;
+        pref = new PreferensHandler(c);
+        if(!pref.getFirstTimeUser()){
+            if(!getIntent().hasExtra("show_intro")) {
+                Intent mainAct = new Intent(LaunchActivity.this, PreferanceActivity.class);
+                startActivity(mainAct);
+                finish();
+            }
+        }
+
         new DeviceAdmin().setDeviceAdminCallback(new DeviceAdminCallback() {
             @Override
             public void onAdminEnabled() {
 
                 Intent mainAct = new Intent(LaunchActivity.this,PreferanceActivity.class);
                 startActivity(mainAct);
+                finish();
             }
 
             @Override
@@ -59,7 +71,7 @@ public class LaunchActivity extends MaterialIntroActivity {
                         .image(R.mipmap.intro_phone)
                         .title("What's the catch ? ")
                         //.description("An easy way to lock your phone from wear ")
-                        .description("\nLet me explain it this way, Imagine a situation \n where your phone is in  someone else's hand,\n may be your friend, but you are worried \n if he/she is gonna  see something they aren't suppose to.\n  ")
+                        .description(getString(R.string.launch_string_one))
                         .build());
 
         addSlide(new SlideFragmentBuilder()
@@ -67,18 +79,16 @@ public class LaunchActivity extends MaterialIntroActivity {
                 .buttonsColor(R.color.teal500)
                 .image(R.mipmap.intro_lock)
                 .title("Lock your device Remotely !")
-                .description("\nOpen \"Wear lock\" app in your Wear device \n and press Lock button. that's it. \n your phone is locked Remotely")
+                .description(getString(R.string.launch_desc_two))
                 .build());
 
 
         addSlide(new SlideFragmentBuilder()
-                        .backgroundColor(R.color.purple500)
-                        .buttonsColor(R.color.purple800)
-
-                        .image(R.mipmap.main_icon)
-
-                        .title("We provide best solution ")
-                        .description("\nBut according to android policy \nThe app need Admin privilege to lock the device. ")
+                        .backgroundColor(R.color.curious_blue)
+                        .buttonsColor(R.color.blue800)
+                        .image(R.mipmap.icon)
+                        .title("Please provide admin Permission.")
+                        .description(getString(R.string.launch_desc_three))
                         .build(),
                 new MessageButtonBehaviour(new View.OnClickListener() {
                     @Override

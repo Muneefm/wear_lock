@@ -169,7 +169,14 @@ public class ApplicationController extends Application implements NavigationView
 
     public  void startRingPhone(boolean isRing){
         Log.e("lock","startRingPhone "+isRing);
-
+if(!isRing){
+    if(defaultRingtone!=null){
+        if(defaultRingtone.isPlaying()){
+            defaultRingtone.stop();
+            notificationPref(false);
+        }
+    }
+}
         try {
         /*    Log.e("lock","startRingPhone "+isRing);
 
@@ -182,6 +189,7 @@ public class ApplicationController extends Application implements NavigationView
                     path);
             Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), path);
             r.play();*/
+
            if(defaultRingtone!=null){
                if(!defaultRingtone.isPlaying()) {
                    defaultRintoneUri = RingtoneManager.getActualDefaultRingtoneUri(c.getApplicationContext(), RingtoneManager.TYPE_RINGTONE);

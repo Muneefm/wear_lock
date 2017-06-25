@@ -97,5 +97,8 @@
     <string name="admin_warning">Please provide admin privilege</string>
     <string name="admin_warning_content">This app needs admin privilege to Lock the phone, please enable admin privilege</string>
     <string name="disable_admin_privilege">Disable Admin Privilege</string>
+    <string name="launch_string_one">Let me explain it this way, Imagine a situation   where your phone is in  someone else\'s hand,  may be your friend, but you are worried   if he/she is gonna  see something they aren\'t suppose to. Then</string>
+    <string name="launch_desc_two">Open \"Wear lock\" app in your Wear device   and press Lock button. that\'s it.   your phone is locked Remotely</string>
+    <string name="launch_desc_three">As per android policy  The app need Admin privilege to lock the device.</string>
 
 </resources>

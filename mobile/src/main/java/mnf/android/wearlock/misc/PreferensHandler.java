@@ -16,6 +16,7 @@ public class PreferensHandler {
     Context c;
     int PRIVATE_MODE = 0;
     private static final String PREF_NAME = "settings_pref";
+    final String first_time_user = "first_time_user";
     final String wear_lock_enable = "enable_lock";
     final String bluetooth_lock_enable = "blue_lock";
     final String phone_ring_enable = "ring_phone";
@@ -54,6 +55,16 @@ public class PreferensHandler {
 
     public Boolean getPhoneRignEnable(){
         return pref.getBoolean(phone_ring_enable, true);
+    }
+
+
+    public void setFirstTimeUser(Boolean var){
+        editor.putBoolean(first_time_user, var);
+        editor.commit();
+    }
+
+    public Boolean getFirstTimeUser(){
+        return pref.getBoolean(first_time_user, true);
     }
 
 

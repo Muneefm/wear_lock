@@ -44,10 +44,10 @@ public class PreferanceActivity extends AppCompatActivity {
     @BindView(R.id.alert_text)
     TextView enableRingLockTv;
 
-    @BindView(R.id.demo_text)
+   /* @BindView(R.id.demo_text)
     TextView demoTv;
 
-
+*/
     @BindView(R.id.switch_lock)
     SwitchCompat switchLockWear;
     @BindView(R.id.switchCompat)
@@ -72,15 +72,16 @@ public class PreferanceActivity extends AppCompatActivity {
         setContentView(R.layout.activity_preferance);
         ButterKnife.bind(this);
         c = this;
+        pref  = new PreferensHandler(c);
+        pref.setFirstTimeUser(false);
         mAppController = new ApplicationController();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        pref  = new PreferensHandler(c);
         Typeface face = Typeface.createFromAsset(getAssets(), "fonts/Jaldi-Regular.ttf");
         enableLockTv.setTypeface(face);
         enableBlueLockTv.setTypeface(face);
         enableRingLockTv.setTypeface(face);
-        demoTv.setTypeface(face);
+      //  demoTv.setTypeface(face);
         deviceName.setTypeface(face);
 
         //tvMovie.setTypeface(face);
@@ -98,8 +99,10 @@ public class PreferanceActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent launchIntent = new Intent(PreferanceActivity.this,LaunchActivity.class);
+                launchIntent.putExtra("show_intro","1");
+                startActivity(launchIntent);
+                finish();
             }
         });
         switchLockWear.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
