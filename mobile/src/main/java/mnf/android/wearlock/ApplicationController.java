@@ -176,8 +176,8 @@ if(!isRing){
             notificationPref(false);
         }
     }
-}
-        try {
+}else {
+    try {
         /*    Log.e("lock","startRingPhone "+isRing);
 
             Uri path = Uri.parse("android.resource://"+getPackageName()+"/raw/sound.mp3");
@@ -190,24 +190,24 @@ if(!isRing){
             Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), path);
             r.play();*/
 
-           if(defaultRingtone!=null){
-               if(!defaultRingtone.isPlaying()) {
-                   defaultRintoneUri = RingtoneManager.getActualDefaultRingtoneUri(c.getApplicationContext(), RingtoneManager.TYPE_RINGTONE);
-                   defaultRingtone = RingtoneManager.getRingtone(c, defaultRintoneUri);
-                   defaultRingtone.play();
-                   notificationPref(true);
-               }
-               else{
-                   defaultRingtone.stop();
-                   notificationPref(false);
+        if (defaultRingtone != null) {
+            if (!defaultRingtone.isPlaying()) {
+                defaultRintoneUri = RingtoneManager.getActualDefaultRingtoneUri(c.getApplicationContext(), RingtoneManager.TYPE_RINGTONE);
+                defaultRingtone = RingtoneManager.getRingtone(c, defaultRintoneUri);
+                defaultRingtone.play();
+                notificationPref(true);
+            } else {
+                defaultRingtone.stop();
+                notificationPref(false);
 
-               }
-           }
+            }
+        }
 
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
+
     }
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {

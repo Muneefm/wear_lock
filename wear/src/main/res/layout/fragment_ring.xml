@@ -20,6 +20,16 @@
 
             app:buttonRippleColor="@color/grey" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ring_btn"
+            android:textStyle="bold"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:text="Ring your device"
+            />
+
     </RelativeLayout>
 
 </RelativeLayout>
