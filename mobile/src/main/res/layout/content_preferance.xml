@@ -176,6 +176,7 @@
         <RelativeLayout
             android:layout_below="@+id/container_notification"
             android:layout_marginTop="50dp"
+            android:id="@+id/button_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <Button
@@ -215,7 +216,24 @@
         </RelativeLayout>
 
 
-
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_marginLeft="20dp"
+    android:layout_marginTop="20dp"
+    android:layout_marginRight="20dp"
+    android:layout_below="@+id/button_container"
+    android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/how_to_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+           android:gravity="center"
+            android:textSize="11dp"
+            android:layout_centerVertical="true"
+            android:text="@string/all_set_open"
+            />
+</RelativeLayout>
 
     </RelativeLayout>
 

@@ -16,6 +16,9 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
 import com.google.android.gms.wearable.Node;
 
 import java.util.List;
@@ -59,6 +62,8 @@ public class PreferanceActivity extends AppCompatActivity {
     Button adminEnableBtn;
     @BindView(R.id.admin_disable_button)
     Button adminDisableBtn;
+    @BindView(R.id.how_to_text)
+            TextView tvHowTo;
    /* @SwitchCompat(R.id.demo_text)
     TextView demoTv;*/
 
@@ -79,12 +84,18 @@ public class PreferanceActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Typeface face = Typeface.createFromAsset(getAssets(), "fonts/Jaldi-Regular.ttf");
+        tvHowTo.setTypeface(face);
         enableLockTv.setTypeface(face);
         enableBlueLockTv.setTypeface(face);
         enableRingLockTv.setTypeface(face);
       //  demoTv.setTypeface(face);
         deviceName.setTypeface(face);
-
+        //AdView adView = new AdView(this);
+       // adView.setAdSize(AdSize.BANNER);
+       // adView.setAdUnitId("ca-app-pub-3940256099942544/6300978111");
+        AdView mAdView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
         //tvMovie.setTypeface(face);
         switchLockWear.setChecked(pref.getWearLockEnable());
         switchBluetoothLock.setChecked(pref.getBluetoothLock());

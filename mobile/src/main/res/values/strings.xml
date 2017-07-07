@@ -100,5 +100,6 @@
     <string name="launch_string_one">Let me explain it this way, Imagine a situation \n  where your phone is in  someone else\'s hand, \n may be your friend, but you are worried  \n if he/she is gonna  see something they aren\'t suppose to. \n Then</string>
     <string name="launch_desc_two">Open \"Wear lock\" app in your Wear device  \n and press Lock button. that\'s it.  \n your phone is locked Remotely</string>
     <string name="launch_desc_three">As per android policy  The app need \nAdmin privilege to lock the device.</string>
+    <string name="all_set_open">*all set? and still don\'t know what to do?  open up \"wear lock\" in connected wear device.\n and press \"Lock phone\" button to lock instantly,  or swipe left and press\n \"Ring my phone\" to Alert your phone.</string>
 
 </resources>
