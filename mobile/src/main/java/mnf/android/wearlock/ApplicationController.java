@@ -23,6 +23,7 @@ import android.view.MenuItem;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
@@ -35,6 +36,7 @@ import com.google.android.gms.wearable.DataMapItem;
 import com.google.android.gms.wearable.Node;
 import com.google.android.gms.wearable.NodeApi;
 import com.google.android.gms.wearable.Wearable;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.lang.reflect.Modifier;
 import java.util.List;
@@ -62,6 +64,9 @@ public class ApplicationController extends Application implements NavigationView
     static PreferensHandler pref;
    static Ringtone defaultRingtone;
    static Uri defaultRintoneUri;
+    private FirebaseAnalytics mFirebaseAnalytics;
+
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -74,6 +79,9 @@ public class ApplicationController extends Application implements NavigationView
                 .addOnConnectionFailedListener(this)
                 .build();
         mGoogleApiClient.connect();
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+
+          MobileAds.initialize(this, "ca-app-pub-7269223551241818~6227525887");
         registerReceiver(new BroadCast(), new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED));
         Log.e("ApplicationController","Application controller last ");
         Uri defaultRintoneUri = RingtoneManager.getActualDefaultRingtoneUri(c.getApplicationContext(), RingtoneManager.TYPE_RINGTONE);

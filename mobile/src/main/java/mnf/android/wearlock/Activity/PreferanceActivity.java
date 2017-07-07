@@ -64,6 +64,7 @@ public class PreferanceActivity extends AppCompatActivity {
 
     PreferensHandler pref;
     Context c;
+    //private FirebaseAnalytics mFirebaseAnalytics;
 
     ApplicationController mAppController;
     @Override
