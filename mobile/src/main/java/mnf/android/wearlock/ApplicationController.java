@@ -11,10 +11,12 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.media.AudioAttributes;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
@@ -66,7 +68,7 @@ public class ApplicationController extends Application implements NavigationView
    static Uri defaultRintoneUri;
     private FirebaseAnalytics mFirebaseAnalytics;
 
-
+    Vibrator v;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -86,6 +88,8 @@ public class ApplicationController extends Application implements NavigationView
         Log.e("ApplicationController","Application controller last ");
         Uri defaultRintoneUri = RingtoneManager.getActualDefaultRingtoneUri(c.getApplicationContext(), RingtoneManager.TYPE_RINGTONE);
         defaultRingtone = RingtoneManager.getRingtone(c, defaultRintoneUri);
+         v = (Vibrator) c.getSystemService(Context.VIBRATOR_SERVICE);
+
 
     }
 
@@ -181,7 +185,7 @@ if(!isRing){
     if(defaultRingtone!=null){
         if(defaultRingtone.isPlaying()){
             defaultRingtone.stop();
-            notificationPref(false);
+            notificationPref(false,getApplicationContext());
         }
     }
 }else {
@@ -202,11 +206,18 @@ if(!isRing){
             if (!defaultRingtone.isPlaying()) {
                 defaultRintoneUri = RingtoneManager.getActualDefaultRingtoneUri(c.getApplicationContext(), RingtoneManager.TYPE_RINGTONE);
                 defaultRingtone = RingtoneManager.getRingtone(c, defaultRintoneUri);
+              //  RingtoneManager ringtoneManager = new RingtoneManager(c);
+
                 defaultRingtone.play();
-                notificationPref(true);
+                if(v!=null) {
+                Log.e("TAG","v is not null");
+                    v.vibrate(2000);
+                }
+                notificationPref(true,getApplicationContext());
             } else {
                 defaultRingtone.stop();
-                notificationPref(false);
+                v.cancel();
+                notificationPref(false,getApplicationContext());
 
             }
         }
@@ -271,33 +282,37 @@ if(!isRing){
         }
     }
 
-    public void notificationPref(boolean show){
+    public static void notificationPref(boolean show,Context c){
+        Log.e("TAG","notification func show = "+show);
         if(show) {
-            Intent intent = new Intent(this, PreferanceActivity.class);
+            Log.e("TAG","notification show");
+
+            Intent intent = new Intent(c, PreferanceActivity.class);
             intent.putExtra("notification","1");
 // use System.currentTimeMillis() to have a unique ID for the pending intent
-            PendingIntent pIntent = PendingIntent.getActivity(this, (int) System.currentTimeMillis(), intent, 0);
+            PendingIntent pIntent = PendingIntent.getActivity(c, (int) System.currentTimeMillis(), intent, 0);
 
 // build notification
 // the addAction re-use the same intent to keep the example short
-            Notification n = new Notification.Builder(this)
+            Notification n = new Notification.Builder(c)
                     .setContentTitle("Ring !!")
                     .setContentText("Ring ring from wear")
                     .setSmallIcon(R.drawable.ic_notification)
-                    .setContentIntent(pIntent)
-                    .setAutoCancel(true)
                     .addAction(R.drawable.ic_notification, "Stop", pIntent)
                     .setPriority(Notification.PRIORITY_HIGH)
                     .build();
 
-
             NotificationManager notificationManager =
-                    (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                    (NotificationManager) c.getSystemService(NOTIFICATION_SERVICE);
+            Log.e("TAG","notification last 2");
 
-            notificationManager.notify(0, n);
+            notificationManager.notify(1, n);
+            Log.e("TAG","notification last");
         }else{
+            Log.e("TAG","notification cancel = "+show);
+
             NotificationManager notificationManager =
-                    (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                    (NotificationManager) c.getSystemService(NOTIFICATION_SERVICE);
 
             notificationManager.cancel(0);
         }

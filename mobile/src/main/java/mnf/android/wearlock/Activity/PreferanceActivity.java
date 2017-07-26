@@ -64,6 +64,8 @@ public class PreferanceActivity extends AppCompatActivity {
     Button adminDisableBtn;
     @BindView(R.id.how_to_text)
             TextView tvHowTo;
+    @BindView(R.id.set_background)
+    TextView tvBackground;
    /* @SwitchCompat(R.id.demo_text)
     TextView demoTv;*/
 
@@ -85,6 +87,7 @@ public class PreferanceActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         Typeface face = Typeface.createFromAsset(getAssets(), "fonts/Jaldi-Regular.ttf");
         tvHowTo.setTypeface(face);
+        tvBackground.setTypeface(face);
         enableLockTv.setTypeface(face);
         enableBlueLockTv.setTypeface(face);
         enableRingLockTv.setTypeface(face);

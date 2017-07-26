@@ -101,5 +101,6 @@
     <string name="launch_desc_two">Open \"Wear lock\" app in your Wear device  \n and press Lock button. that\'s it.  \n your phone is locked Remotely</string>
     <string name="launch_desc_three">As per android policy  The app need \nAdmin privilege to lock the device.</string>
     <string name="all_set_open">*all set? and still don\'t know what to do?  open up \"wear lock\" in connected wear device.\n and press \"Lock phone\" button to lock instantly,  or swipe left and press\n \"Ring my phone\" to Alert your phone.</string>
+    <string name="set_background">Please make sure this app is running in background</string>
 
 </resources>

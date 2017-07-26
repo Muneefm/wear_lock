@@ -1,4 +1,8 @@
 package mnf.android.wearlock.Tools;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
 import com.google.android.gms.common.data.FreezableUtils;
@@ -9,7 +13,10 @@ import com.google.android.gms.wearable.DataMapItem;
 import com.google.android.gms.wearable.MessageEvent;
 import com.google.android.gms.wearable.WearableListenerService;
 import java.util.List;
+
+import mnf.android.wearlock.Activity.PreferanceActivity;
 import mnf.android.wearlock.ApplicationController;
+import mnf.android.wearlock.R;
 import mnf.android.wearlock.misc.PreferensHandler;
 
 /**
@@ -57,4 +64,5 @@ public class WearListener extends WearableListenerService {
         Log.e("lock"," WearListener Phone on create");
         super.onCreate();
     }
+
 }
