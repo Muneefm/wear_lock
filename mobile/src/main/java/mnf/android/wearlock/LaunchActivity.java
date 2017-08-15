@@ -88,7 +88,7 @@ public class LaunchActivity extends MaterialIntroActivity {
                         .buttonsColor(R.color.blue800)
                         .image(R.mipmap.icon)
                         .title("Please provide admin Permission.")
-                        .description(getString(R.string.launch_desc_three))
+                        .description(getString(R.string.admin_description))
                         .build(),
                 new MessageButtonBehaviour(new View.OnClickListener() {
                     @Override
